@@ -2,10 +2,10 @@
 
 namespace Erichard\ElasticQueryBuilder\Filter;
 
-abstract class Filter
-{
-    abstract public function build(): array;
+use Erichard\ElasticQueryBuilder\Contracts\BuildsArray;
 
+abstract class Filter implements BuildsArray
+{
     public static function terms()
     {
         return new TermsFilter();

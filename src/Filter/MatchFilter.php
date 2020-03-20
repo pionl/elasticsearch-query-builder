@@ -2,20 +2,16 @@
 
 namespace Erichard\ElasticQueryBuilder\Filter;
 
+use Erichard\ElasticQueryBuilder\Features\HasField;
 use Erichard\ElasticQueryBuilder\QueryException;
 
 class MatchFilter extends Filter
 {
-    protected $field;
+    use HasField;
+
     protected $query;
     protected $analyzer;
 
-    public function setField(string $field)
-    {
-        $this->field = $field;
-
-        return $this;
-    }
 
     public function setQuery(string $query)
     {

@@ -2,7 +2,9 @@
 
 namespace Erichard\ElasticQueryBuilder\Aggregation;
 
-abstract class Aggregation
+use Erichard\ElasticQueryBuilder\Contracts\BuildsArray;
+
+abstract class Aggregation implements BuildsArray
 {
     private $name;
 
@@ -15,8 +17,6 @@ abstract class Aggregation
     {
         return $this->name;
     }
-
-    abstract public function build(): array;
 
     public static function terms($name = null)
     {

@@ -3,10 +3,15 @@
 namespace Erichard\ElasticQueryBuilder;
 
 use Erichard\ElasticQueryBuilder\Aggregation\Aggregation;
+use Erichard\ElasticQueryBuilder\Features\Collapse;
+use Erichard\ElasticQueryBuilder\Features\HasCollapse;
+use Erichard\ElasticQueryBuilder\Features\HasSorting;
 use Erichard\ElasticQueryBuilder\Filter\Filter;
 
 class QueryBuilder
 {
+    use HasSorting, HasCollapse;
+
     /**
      * @var array
      */
@@ -18,19 +23,14 @@ class QueryBuilder
     private $aggregations = [];
 
     /**
-     * @var array
+     * @var Filter
      */
-    private $filters = [];
+    private $filter = null;
 
     /**
      * @var Filter
      */
     private $postFilter;
-
-    /**
-     * @var array
-     */
-    private $sort = [];
 
     public function __construct(array $query = [])
     {
@@ -72,13 +72,6 @@ class QueryBuilder
         return $this;
     }
 
-    public function addSort($field, array $config)
-    {
-        $this->sort[$field] = $config;
-
-        return $this;
-    }
-
     public function addAggregation(Aggregation $aggregation)
     {
         $this->aggregations[] = $aggregation;
@@ -88,7 +81,7 @@ class QueryBuilder
 
     public function addFilter(Filter $filter)
     {
-        $this->filters[] = $filter;
+        $this->filter = $filter;
 
         return $this;
     }
@@ -109,23 +102,16 @@ class QueryBuilder
             }
         }
 
-        if (!empty($this->filters)) {
-            $query['body']['query'] = [];
-            foreach ($this->filters as $filter) {
-                $query['body']['query'] = $filter->build();
-            }
+        if (null !== $this->filter) {
+            $query['body']['query'] = $this->filter->build();
         }
 
         if (null !== $this->postFilter) {
             $query['body']['post_filter'] = $this->postFilter->build();
         }
 
-        if (!empty($this->sort)) {
-            $query['body']['sort'] = [];
-            foreach ($this->sort as $sort => $config) {
-                $query['body']['sort'][$sort] = $config;
-            }
-        }
+        $this->buildSort($query['body']);
+        $this->buildCollapse($query['body']);
 
         return $query;
     }

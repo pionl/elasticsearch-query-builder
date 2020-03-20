@@ -2,20 +2,15 @@
 
 namespace Erichard\ElasticQueryBuilder\Filter;
 
+use Erichard\ElasticQueryBuilder\Features\HasField;
 use Erichard\ElasticQueryBuilder\QueryException;
 
 class PrefixFilter extends Filter
 {
-    protected $field;
+    use HasField;
+
     protected $value;
     protected $boost;
-
-    public function setField(string $field)
-    {
-        $this->field = $field;
-
-        return $this;
-    }
 
     public function setValue($value)
     {

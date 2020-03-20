@@ -2,22 +2,17 @@
 
 namespace Erichard\ElasticQueryBuilder\Filter;
 
+use Erichard\ElasticQueryBuilder\Features\HasField;
 use Erichard\ElasticQueryBuilder\QueryException;
 
 class RangeFilter extends Filter
 {
-    protected $field;
+    use HasField;
+
     protected $lt;
     protected $gt;
     protected $lte;
     protected $gte;
-
-    public function setField(string $field)
-    {
-        $this->field = $field;
-
-        return $this;
-    }
 
     public function gt($value)
     {

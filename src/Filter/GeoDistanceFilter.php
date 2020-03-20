@@ -2,11 +2,14 @@
 
 namespace Erichard\ElasticQueryBuilder\Filter;
 
+use Erichard\ElasticQueryBuilder\Features\HasField;
+
 class GeoDistanceFilter extends Filter
 {
+    use HasField;
+
     protected $distance;
     protected $pinLocation;
-    protected $field;
 
     public function setDistance($distance)
     {
@@ -18,13 +21,6 @@ class GeoDistanceFilter extends Filter
     public function setPinLocation($pinLocation)
     {
         $this->pinLocation = $pinLocation;
-
-        return $this;
-    }
-
-    public function setField($field)
-    {
-        $this->field = $field;
 
         return $this;
     }

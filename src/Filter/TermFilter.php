@@ -2,19 +2,14 @@
 
 namespace Erichard\ElasticQueryBuilder\Filter;
 
+use Erichard\ElasticQueryBuilder\Features\HasField;
 use Erichard\ElasticQueryBuilder\QueryException;
 
 class TermFilter extends Filter
 {
-    protected $field;
+    use HasField;
+
     protected $value;
-
-    public function setField(string $field)
-    {
-        $this->field = $field;
-
-        return $this;
-    }
 
     public function setValue($value)
     {

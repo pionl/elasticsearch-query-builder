@@ -95,6 +95,11 @@ class QueryBuilder
     {
         $query = $this->query;
 
+        // Ensure that query can built even if no filter/aggregations are used.
+        if (!isset($query['body'])) {
+            $query['body'] = [];
+        }
+
         if (!empty($this->aggregations)) {
             $query['body']['aggs'] = [];
             foreach ($this->aggregations as $aggregation) {

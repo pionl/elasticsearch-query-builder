@@ -3,11 +3,13 @@
 namespace Erichard\ElasticQueryBuilder\Filter;
 
 use Erichard\ElasticQueryBuilder\Features\HasField;
+use Erichard\ElasticQueryBuilder\Features\HasOperator;
 use Erichard\ElasticQueryBuilder\QueryException;
 
 class MatchFilter extends Filter
 {
     use HasField;
+    use HasOperator;
 
     protected $query;
     protected $analyzer;
@@ -44,6 +46,8 @@ class MatchFilter extends Filter
         if (null !== $this->analyzer) {
             $query['match'][$this->field]['analyzer'] = $this->analyzer;
         }
+
+        $this->buildOperator($query['match'][$this->field]);
 
         return $query;
     }

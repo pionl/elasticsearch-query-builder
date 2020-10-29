@@ -2,10 +2,13 @@
 
 namespace Erichard\ElasticQueryBuilder\Filter;
 
+use Erichard\ElasticQueryBuilder\Features\HasOperator;
 use Erichard\ElasticQueryBuilder\QueryException;
 
 class MultiMatchFilter extends Filter
 {
+    use HasOperator;
+
     protected $fields;
     protected $query;
     protected $type;
@@ -63,6 +66,8 @@ class MultiMatchFilter extends Filter
         if (null !== $this->fuzziness) {
             $query['multi_match']['fuzziness'] = $this->fuzziness;
         }
+
+        $this->buildOperator($query['multi_match']);
 
         return $query;
     }
